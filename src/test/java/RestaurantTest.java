@@ -1,8 +1,6 @@
 import org.junit.Test;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -19,30 +17,35 @@ public class RestaurantTest {
     @Test
     public void testTablHoraire(){
         Restaurant myRestaurant = new Restaurant("toto");
-
         assertThat(myRestaurant.getTablHoraire().isEmpty(), is(false));
 
     }
 
-    //test for sunday (closed day) at real system time.
+    //test for Monday (open day) at open hour.
 
     @Test
-    public void testSundayActualTime() {
-
-        Restaurant myRestaurant = new Restaurant("toto");
-        boolean isOpen = myRestaurant.isOpen(DayOfWeek.SUNDAY);
-
-       assertFalse(isOpen);
+    public void testMondayOpenTime() {
+        String testingDate = "2016-07-04T10:00:00Z";
+        boolean isOpen = false;
+        assertTrue(isOpenTest(testingDate));
     }
 
-    // test for a classical open day (ex:Thursday) with real system time
+    //test for Sunday (open day) at open hour.
 
     @Test
-    public void testMondayActualTime() {
+    public void testSundayOpenHour() {
+        String testingDate = "2016-07-03T10:00:00Z";
+        boolean isOpen = false;
+        assertFalse(isOpenTest(testingDate));
+    }
 
+
+    public boolean isOpenTest(String stD){
+
+        Clock fakeCloke = Clock.fixed(Instant.parse(stD), ZoneId.systemDefault());
         Restaurant myRestaurant = new Restaurant("toto");
-        boolean isOpen = myRestaurant.isOpen(DayOfWeek.THURSDAY);
-
-        assertTrue(isOpen);
+        myRestaurant.setClock(fakeCloke);
+        boolean isOpen = myRestaurant.isOpen();
+        return isOpen;
     }
 }

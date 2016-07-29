@@ -1,5 +1,8 @@
+import java.time.Clock;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +13,9 @@ import java.util.Map;
 public class Restaurant {
 
     private String name;
+
+    private Clock clock = Clock.systemDefaultZone();
+
     private Map<DayOfWeek,Horaires> tablHoraire;
 
 
@@ -29,25 +35,21 @@ public class Restaurant {
         tablHoraire.put(DayOfWeek.SATURDAY, new Horaires());
     }
 
+    public boolean isOpen() {
 
- public boolean isOpen(DayOfWeek day) {
-     if (!(day.equals(DayOfWeek.SUNDAY))) {
-         if (LocalTime.now().isAfter(LocalTime.parse(this.tablHoraire.get(day).getTimeOpen()))
-                 && LocalTime.now().isBefore(LocalTime.parse(this.tablHoraire.get(day).getTimeClose()))) {
+        DayOfWeek day = LocalDate.now(clock).getDayOfWeek();
+    if (tablHoraire.containsKey(day)){
+         if (LocalTime.now(clock).isAfter(LocalTime.parse(this.tablHoraire.get(day).getTimeOpen()))
+                 && LocalTime.now(clock).isBefore(LocalTime.parse(this.tablHoraire.get(day).getTimeClose()))) {
+
              return true;
          } else {
              return false;
          }
      } return false;
+
  }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Map<DayOfWeek, Horaires> getTablHoraire() {
         return tablHoraire;
@@ -55,5 +57,13 @@ public class Restaurant {
 
     public void setTablHoraire(Map<DayOfWeek, Horaires> tablHoraire) {
         this.tablHoraire = tablHoraire;
+    }
+
+    public Clock getClock() {
+        return clock;
+    }
+
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 }
