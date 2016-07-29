@@ -26,17 +26,20 @@ public class Restaurant {
         tablHoraire.put(DayOfWeek.WEDNESDAY, new Horaires());
         tablHoraire.put(DayOfWeek.THURSDAY, new Horaires());
         tablHoraire.put(DayOfWeek.FRIDAY, new Horaires());
+        tablHoraire.put(DayOfWeek.SATURDAY, new Horaires());
     }
 
 
  public boolean isOpen(DayOfWeek day) {
-          if (LocalTime.now().isAfter(LocalTime.parse(this.tablHoraire.get(day).getTimeOpen()))
-                  && LocalTime.now().isBefore(LocalTime.parse(this.tablHoraire.get(day).getTimeClose()))) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+     if (!(day.equals(DayOfWeek.SUNDAY))) {
+         if (LocalTime.now().isAfter(LocalTime.parse(this.tablHoraire.get(day).getTimeOpen()))
+                 && LocalTime.now().isBefore(LocalTime.parse(this.tablHoraire.get(day).getTimeClose()))) {
+             return true;
+         } else {
+             return false;
+         }
+     } return false;
+ }
 
     public String getName() {
         return name;
