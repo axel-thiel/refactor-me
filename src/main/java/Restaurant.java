@@ -2,7 +2,6 @@ import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,11 +12,8 @@ import java.util.Map;
 public class Restaurant {
 
     private String name;
-
     private Clock clock = Clock.systemDefaultZone();
-
     private Map<DayOfWeek,Horaires> tablHoraire;
-
 
 
     public Restaurant(String name) {
@@ -36,19 +32,18 @@ public class Restaurant {
     }
 
     public boolean isOpen() {
-
         DayOfWeek day = LocalDate.now(clock).getDayOfWeek();
-    if (tablHoraire.containsKey(day)){
-         if (LocalTime.now(clock).isAfter(LocalTime.parse(this.tablHoraire.get(day).getTimeOpen()))
-                 && LocalTime.now(clock).isBefore(LocalTime.parse(this.tablHoraire.get(day).getTimeClose()))) {
+        if (tablHoraire.containsKey(day)){
+            if (LocalTime.now(clock).isAfter(LocalTime.parse(this.tablHoraire.get(day).getTimeOpen()))
+                    && LocalTime.now(clock).isBefore(LocalTime.parse(this.tablHoraire.get(day).getTimeClose()))) {
 
-             return true;
-         } else {
-             return false;
-         }
-     } return false;
+                return true;
+            } else {
+                return false;
+            }
+        } return false;
 
- }
+    }
 
 
     public Map<DayOfWeek, Horaires> getTablHoraire() {
